@@ -22,17 +22,22 @@ $arComponentParameters = array(
 			"DEFAULT" => GetMessage("MFP_OK_TEXT"), 
 			"PARENT" => "BASE",
 		),
-		"EMAIL_TO" => Array(
-			"NAME" => GetMessage("MFP_EMAIL_TO"), 
-			"TYPE" => "STRING",
-			"DEFAULT" => htmlspecialcharsbx(COption::GetOptionString("main", "email_from")), 
-			"PARENT" => "BASE",
-		),
+		
+		
 		"REQUIRED_FIELDS" => Array(
 			"NAME" => GetMessage("MFP_REQUIRED_FIELDS"), 
 			"TYPE"=>"LIST", 
 			"MULTIPLE"=>"Y", 
-			"VALUES" => Array("AUTHOR" => GetMessage("MFP_NAME"), "EMAIL" => "E-mail", "MESSAGE" => GetMessage("MFP_MESSAGE")),
+			"VALUES" => Array("AUTHOR" => GetMessage("MFP_NAME"), "EMAIL" => "E-mail"),
+			"DEFAULT"=>"", 
+			"COLS"=>25, 
+			"PARENT" => "BASE",
+		),
+		"REQUIRED_TEXTAREAS" => Array(
+			"NAME" => GetMessage("MFP_REQUIRED_FIELDS"), 
+			"TYPE"=>"LIST", 
+			"MULTIPLE"=>"Y", 
+			"VALUES" => Array('POSITIVES'=>'ПЛЮСЫ', 'NEGATIVES'=>'МИНУСЫ'),
 			"DEFAULT"=>"", 
 			"COLS"=>25, 
 			"PARENT" => "BASE",

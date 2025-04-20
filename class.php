@@ -56,11 +56,11 @@ class TestTask extends \CBitrixComponent
 			$iblock_class = Iblock::wakeUp($this->arParams['IBLOCK_ID'])->getEntityDataClass();
 			
 			$getReviewElements = $iblock_class::getList([
-                'filter'=>['IS_CHECKED'=>'Y'],
-                'select' => ['*', 'MESSAGE_'=>'MESSAGE', 'AUTHOR_'=>'AUTHOR', 'EMAIL_'=>'EMAIL', 'IS_CHECKED'],
+                'filter'=>['IS_CHECKED_VALUE'=>'Y'],
+                'select' => ['*', 'MESSAGE_'=>'MESSAGE', 'EMAIL_'=>'EMAIL', 'POSITIVES_'=>'POSITIVES', 'NEGATIVES_'=>'NEGATIVES', 'IS_CHECKED_'=>'IS_CHECKED'],
             ]);
 			
-			foreach($review = $getReviewElements->fetch())
+			foreach($getReviewElements->fetchAll() as $review)
 			{
 				$this->arResult['ITEMS'][] = $review;
 			}
@@ -69,13 +69,32 @@ class TestTask extends \CBitrixComponent
 			{
 				if(check_bitrix_sessid())
 				{
-					$new_element = $iblock_class::add([
-						'NAME' => $request->get('AUTHOR'),
-						'MESSAGE' => $request->get('MESSAGE'),
-						'EMAIL' => $request->get('EMAIL'),
-						'IS_CHECKED' => 'N',
+					$el = new \CIBlockElement;
+					$PROP = array();
+					$PROP['AUTHOR'] = $request->get('AUTHOR');  
+					$PROP['MESSAGE'] = $request->get('MESSAGE'); 
+					$PROP['EMAIL'] = $request->get('EMAIL');  
+					$PROP['POSITIVES'] = $request->get('POSITIVES');  
+					$PROP['NEGATIVES'] = $request->get('NEGATIVES'); 
+					$PROP['IS_CHECKED'] = 'N';  
+					
+					
+					$arLoadProductArray = Array(
+
+						"IBLOCK_SECTION_ID" => false,          // элемент лежит в корне раздела
+						"IBLOCK_ID"      => $this->arParams['IBLOCK_ID'],
+						"PROPERTY_VALUES"=> $PROP,
+						"NAME"           => $request->get('AUTHOR'),
+						"ACTIVE"         => "Y",            // активен
 						
-					]);
+
+					);
+					if($PRODUCT_ID = $el->Add($arLoadProductArray))
+						$this->arResult['OK_TEXT'] = $this->arParams['OK_TEXT'];
+					else
+						echo "Error: ".$el->LAST_ERROR;
+					
+					
 				}
 			}
 			

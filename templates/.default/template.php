@@ -14,9 +14,12 @@ if(!defined("B_PROLOG_INCLUDED")||B_PROLOG_INCLUDED!==true)die();
 <!--send-a-request-->
 <ul>
 <?foreach($arResult['ITEMS'] as $message):?>
-	<li><?=$message['AUTHOR']?><br>
-		<?=$message['EMAIL']?><br>
-		<?=$message['MESSAGE']?><br>
+
+	<li>ИМЯ: <?=$message['NAME']?><br>
+		EMAIL: <?=$message['EMAIL_VALUE']?><br>
+		ОТЗЫВ: <?=$message['MESSAGE_VALUE']?><br>
+		ПЛЮСЫ: <?=$message['POSITIVES_VALUE']?><br>
+		МИНУСЫ: <?=$message['NEGATIVES_VALUE']?><br>
 	</li>
 <?endforeach;?>
 </ul>
@@ -41,17 +44,22 @@ if($arResult["OK_MESSAGE"])
 	</div>
 <div class='body'>
     <?=bitrix_sessid_post()?>
-    
-
-                <label class="send-a-request__label" for="send-a-request__name">Author:</label>
-				<input type="text" value="<?=$arResult["AUTHOR_NAME"]?>" name="user_name" class="simple-input send-a-request__input">
-           
-                <label class="send-a-request__label" for="send-a-request__email">Email:</label>
-				<input type="text" name="user_email" value="<?=$arResult["AUTHOR_EMAIL"]?>" class="simple-input send-a-request__input">
-           
-                <label class="send-a-request__label" for="send-a-request__text">Message:</label>
-				<textarea name="MESSAGE" class="simple-textarea send-a-request__textarea"><?=$arResult["MESSAGE"]?></textarea>
-          
+   
+	<?foreach($arParams['REQUIRED_FIELDS'] as $field)
+	{?>
+		<label class="send-a-request__label" for="send-a-request__name"><?= $field?>:</label>
+		<input type="text" value="<?=$arResult["AUTHOR_NAME"]?>" name="<?= $field?>" class="simple-input send-a-request__input"><br>
+	<?}?>
+	<?foreach($arParams['REQUIRED_TEXTAREAS'] as $textarea)
+	{?>
+		 <label class="send-a-request__label" for="send-a-request__text"><?= $textarea?>:</label>
+				<textarea name="<?= $textarea?>" class="simple-textarea send-a-request__textarea"><?=$arResult[$textarea]?></textarea><br><br>
+	<?}?>
+                
+          <label class="send-a-request__label" for="send-a-request__text">Отзыв:</label>
+				<textarea name="MESSAGE" class="simple-textarea send-a-request__textarea"><?=$arResult['MESSAGE']?></textarea><br><br> 
+               
+       <input type="submit" value="Отправить!" />   
 
 
         
